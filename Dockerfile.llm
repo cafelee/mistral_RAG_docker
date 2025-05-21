@@ -1,0 +1,20 @@
+# 使用官方 Python 3.10 精簡映像
+FROM python:3.10-slim
+
+# 設定工作目錄
+WORKDIR /app
+
+# 預先安裝系統套件
+RUN apt-get update && apt-get install -y git cmake build-essential
+
+# 使用清華大學 PyPI 鏡像，避免 pip 超時
+COPY requirements.txt .
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir --prefer-binary --timeout=1000 --retries=10 \
+    -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    -r requirements.txt
+# 複製所有原始碼
+COPY . .
+
+# 預設執行指令
+CMD ["python", "llm_api.py"]

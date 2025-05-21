@@ -1,0 +1,11 @@
+
+services:
+  llm:
+    build:
+      context: ./llm_container
+      dockerfile: Dockerfile.llm
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./llm_container/faiss_index:/app/faiss_index
+      - ./llm_container/mistral-7b-instruct-v0.2.Q4_K_M.gguf:/app/mistral-7b-instruct-v0.2.Q4_K_M.gguf
